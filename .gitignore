@@ -1,0 +1,15 @@
+# Ignore the fetch script since it may contain sensitive API keys
+fetch.py
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Local data files
+nvd_raw.json
+nvd_summary.csv
+last_sync.txt
+processed_advisories.json
+
+# Temporary files
+*.tmp

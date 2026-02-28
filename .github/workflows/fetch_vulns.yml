@@ -1,0 +1,41 @@
+name: Fetch Vulnerabilities
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    name: Fetch and commit vulnerability CSV
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Broadcom scraper
+        run: |
+          # the scraper internally uses broadcom_listing.py to obtain the
+          # notification IDs; the main block now also exports a CSV file.
+          python broadcom_scraper.py
+
+      - name: Commit CSV back to repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet broadcom_advisories.csv; then
+            echo "No changes to CSV, skipping commit."
+          else
+            git add broadcom_advisories.csv
+            git commit -m "Update Broadcom advisories CSV"
+            git push
+          fi

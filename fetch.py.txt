@@ -15,7 +15,10 @@ logger = logging.getLogger(__name__)
 # CONFIG
 # ─────────────────────────────────────────────────────────────
 
-NVD_API_KEY = "cb6716d7-4126-4bb9-8928-a962fc5b79d6"
+# API key for NVD; always load from environment so the script can be
+# safely committed. The GitHub Actions workflow should set this via a
+# secret. The hardcoded key was removed to prevent accidental leakage.
+NVD_API_KEY = os.getenv("NVD_API_KEY")
 if not NVD_API_KEY:
     raise ValueError("NVD_API_KEY environment variable not set")
 
