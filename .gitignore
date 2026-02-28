@@ -11,5 +11,8 @@ nvd_summary.csv
 last_sync.txt
 processed_advisories.json
 
+# Environment file (local secrets)
+.env
+
 # Temporary files
 *.tmp
